@@ -1,1 +1,7 @@
 
+event_id,event_business_key,entity_key,event_type,metric_quantity,base_amount,period_key
+1,EBK_1,E_1,TypeA,10,100,202501
+2,EBK_2,E_2,TypeB,20,200,202501
+3,EBK_3,E_3,TypeA,15,150,202502
+4,EBK_4,E_4,TypeC,5,50,202502
+5,EBK_5,E_1,TypeA,25,250,202503

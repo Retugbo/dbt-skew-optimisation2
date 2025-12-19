@@ -1,1 +1,7 @@
 
+entity_key,period_key,adjustment_category,adjustment_amount
+E_1,202501,AdjA,10
+E_2,202501,AdjB,5
+E_3,202502,AdjA,7
+E_4,202502,AdjC,3
+E_1,202503,AdjB,12

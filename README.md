@@ -38,6 +38,8 @@ from stg_synthetic_movement
 group by
     location_id,
     activity_date
+```
+
 ## Why this approach breaks down
 
 - **High-frequency keys dominate execution**  
@@ -79,6 +81,11 @@ This model processes only the high-frequency location:
 
 ```sql
 where location_id = 'SK1'
+## Next Steps
+
+- Publish accompanying blog article
+- Share technical summary via LinkedIn
+- Map this project to Global Talent endorsement criteria
 
 ### 6.3 Non-Skewed Execution Path
 

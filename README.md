@@ -48,7 +48,7 @@ group by
 
 ---
 
-## 5️ OPTIMISATION STRATEGY
+##  OPTIMISATION STRATEGY
 
 
 ## Optimisation Strategy
@@ -63,8 +63,8 @@ Rather than scaling infrastructure, the optimisation focuses on changing the exe
 - Recombine results using `UNION ALL`
 
 This preserves business logic while improving execution behaviour.
-## 6 Implementation Details
-### 6.1 Synthetic Staging Layer
+##  Implementation Details
+### Synthetic Staging Layer
 
 Seed data is staged using standard dbt practices.
 
@@ -72,7 +72,7 @@ Seed data is staged using standard dbt practices.
 - `models/staging/stg_synthetic_movement.sql`
 
 This mimics movement-level operational data (synthetic).
-### 6.2 Skewed Execution Path
+### Skewed Execution Path
 
 **Model**
 - `models/marts/revenue/revenue_skewed.sql`
@@ -89,8 +89,6 @@ where location_id = 'SK1'
 - Share technical summary via LinkedIn
 - Map this project to Global Talent endorsement criteria
 
-### 6.3 Non-Skewed Execution Path
-
 
 ### Non-Skewed Execution Path
 
@@ -102,9 +100,6 @@ This model processes all other locations efficiently:
 ```sql
 where location_id != 'SK1'
 ```
-
-### 6.4 Final Optimised Model
-
 
 ### Final Optimised Model
 
@@ -120,7 +115,7 @@ select * from revenue_non_skewed
 ```
 ---
 
-## 7️ RESULTS & IMPACT
+##  RESULTS & IMPACT
 
 
 ## Results and Impact
@@ -132,7 +127,7 @@ Using representative synthetic data:
 - dbt runs are more stable
 
 This mirrors a real production fix where instability was resolved without additional compute scaling.
-## 8 Data Privacy and Anonymisation
+##  Data Privacy and Anonymisation
 
 - All datasets are fully synthetic
 - No real customer, financial, or operational data is included
@@ -159,7 +154,7 @@ seeds/
 ```
 ---
 
-## 🔟 KEY TAKEAWAYS
+##  KEY TAKEAWAYS
 
 
 ## Key Takeaways

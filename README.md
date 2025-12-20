@@ -83,13 +83,6 @@ This model processes only the high-frequency location:
 where location_id = 'SK1'
 ```
 
-## Next Steps
-
-- Publish accompanying blog article
-- Share technical summary via LinkedIn
-- Map this project to Global Talent endorsement criteria
-
-
 ### Non-Skewed Execution Path
 
 **Model**
@@ -171,10 +164,3 @@ This project demonstrates:
 - **Production-grade optimisation thinking**
 - **Ethical handling of sensitive data**
 - **Clear communication of technical impact**
-
-It reflects how real analytical engineering challenges are solved in practice.
-## Next Steps
-
-- Publish accompanying blog article
-- Share technical summary via LinkedIn
-- Map this project to Global Talent endorsement criteria

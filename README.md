@@ -1,38 +1,34 @@
-Handling Data Skew in dbt Models
-A Synthetic, Reproducible Case Study
-1. Overview
+# Handling Data Skew in dbt Models
+## A Synthetic, Reproducible Case Study
+## Overview
 
-This repository demonstrates how severe data skew in analytical dbt models can lead to performance degradation and unstable executions, and how isolating skewed keys into separate execution paths can significantly improve reliability.
+This repository demonstrates how severe **data skew** in analytical dbt models can lead to performance degradation and unstable executions, and how isolating skewed keys into separate execution paths can significantly improve reliability.
 
-The implementation is based on a real production issue, recreated using fully synthetic data to safely demonstrate the optimisation pattern without exposing any proprietary or sensitive information.
-
-2. Background and Problem Statement
+This case study is based on a **real production issue**, recreated using **fully synthetic data** so the optimisation pattern can be shared publicly without exposing proprietary or sensitive information.
+## Background and Problem Statement
 
 In analytical workloads, it is common for a small subset of keys to dominate a dataset.
 
 In this case:
 
-A revenue aggregation model grouped movement-level data by location and date
-
-A small number of locations accounted for a disproportionately large share of records
-
-This caused data skew during aggregation
+- A revenue aggregation model grouped movement-level data by **location** and **date**
+- A small number of locations accounted for a **disproportionately large share of records**
+- This caused **data skew** during aggregation
 
 Observed issues included:
 
-Long execution times
-
-Unstable dbt runs
-
-Pressure to scale compute instead of fixing the root cause
+- Long execution times
+- Unstable dbt runs
+- Pressure to scale compute instead of addressing the root cause
 
 The original model was logically correct but did not account for skewed keys.
-
-3. Baseline Approach (Pre-Optimisation)
+## Baseline Approach (Pre-Optimisation)
 
 The baseline implementation aggregates all locations together in a single execution path.
 
-Baseline model – revenue_base.sql
+### Baseline model (`revenue_base.sql`)
+
+```sql
 select
     location_id,
     activity_date,
@@ -42,105 +38,102 @@ from stg_synthetic_movement
 group by
     location_id,
     activity_date
+## Why this approach breaks down
 
-Why this approach breaks down
+- **High-frequency keys dominate execution**  
+- **Workload distribution becomes unbalanced**  
+- **Aggregation stages become bottlenecks**
 
-High-frequency keys dominate execution
+---
 
-Workload distribution becomes unbalanced
+## 5️ OPTIMISATION STRATEGY
 
-Aggregation stages become bottlenecks
-
-4. Optimisation Strategy
+```markdown
+## Optimisation Strategy
 
 Rather than scaling infrastructure, the optimisation focuses on changing the execution pattern.
 
-Core principles
+### Core principles
 
-Identify high-frequency (skewed) keys
+- Identify high-frequency (skewed) keys
+- Isolate skewed keys into a dedicated execution path
+- Process non-skewed data separately
+- Recombine results using `UNION ALL`
 
-Isolate skewed keys into a dedicated execution path
+This preserves business logic while improving execution behaviour.
+## 6 Implementation Details
+### 6.1 Synthetic Staging Layer
 
-Process non-skewed data separately
+Seed data is staged using standard dbt practices.
 
-Recombine results using UNION ALL
+**Staging model**
+- `models/staging/stg_synthetic_movement.sql`
 
-This approach preserves business logic while improving execution behaviour.
+This mimics movement-level operational data (synthetic).
+### 6.2 Skewed Execution Path
 
-5. Implementation Details
-5.1 Synthetic Staging Layer
+**Model**
+- `models/marts/revenue/revenue_skewed.sql`
 
-Synthetic seed data is staged using standard dbt practices.
+This model processes only the high-frequency location:
 
-Staging model:
-
-stg_synthetic_movement.sql
-
-This mimics realistic movement-level operational data.
-
-5.2 Skewed Execution Path
-
-Model:
-
-revenue_skewed.sql
-
-Processes only high-frequency locations:
-
+```sql
 where location_id = 'SK1'
 
+### 6.3 Non-Skewed Execution Path
 
-This prevents skewed keys from overwhelming aggregation stages.
+```markdown
+### Non-Skewed Execution Path
 
-5.3 Non-Skewed Execution Path
+**Model**
+- `models/marts/revenue/revenue_non_skewed.sql`
 
-Model:
+This model processes all other locations efficiently:
 
-revenue_non_skewed.sql
-
-Handles the majority of locations efficiently:
-
+```sql
 where location_id != 'SK1'
 
-5.4 Final Optimised Model
+### 6.4 Final Optimised Model
 
-Model:
+```markdown
+### Final Optimised Model
 
-revenue_optimized.sql
+**Model**
+- `models/marts/revenue/revenue_optimized.sql`
 
 Recombines both execution paths:
 
+```sql
 select * from revenue_skewed
 union all
 select * from revenue_non_skewed
 
+---
 
-This produces a single optimised output with identical results.
+## 7️ RESULTS & IMPACT
 
-6. Results and Impact
+```markdown
+## Results and Impact
 
 Using representative synthetic data:
 
-Aggregations execute more predictably
+- Aggregations execute more predictably
+- Execution paths remain balanced
+- dbt runs are more stable
 
-Execution paths remain balanced
+This mirrors a real production fix where instability was resolved without additional compute scaling.
+## 8 Data Privacy and Anonymisation
 
-dbt runs are more stable
-
-The optimisation mirrors a real production fix where instability was resolved without additional compute scaling.
-
-7. Data Privacy and Anonymisation
-
-All datasets are fully synthetic
-
-No real customer, financial, or operational data is included
-
-Column names, values, and distributions are anonymised
-
-The optimisation logic remains representative of real-world systems
+- All datasets are fully synthetic
+- No real customer, financial, or operational data is included
+- Column names, values, and distributions are anonymised
+- The optimisation logic remains representative of real-world systems
 
 This makes the repository safe for public sharing.
 
-8. Project Structure
+## Project Structure
+
+```text
 models/
   staging/
     stg_synthetic_movement.sql
@@ -154,24 +147,29 @@ seeds/
   movement_non_skewed.csv
   movement_skewed.csv
 
-9. Key Takeaways
+---
 
-Data skew is an execution problem, not just a scaling issue
+## 🔟 KEY TAKEAWAYS
 
-Isolating skewed keys is a simple and effective optimisation pattern
+```markdown
+## Key Takeaways
 
-dbt models benefit from execution-aware design
-
-Synthetic data can safely demonstrate real production behaviour
-
-10. Why This Project Matters
+- Data skew is an execution problem, not just a scaling issue
+- Isolating skewed keys is a simple and effective optimisation pattern
+- dbt models benefit from execution-aware design
+- Synthetic data can safely demonstrate real production behaviour
+## Why This Project Matters
 
 This project demonstrates:
 
-Independent problem solving
+- **Independent problem solving**
+- **Production-grade optimisation thinking**
+- **Ethical handling of sensitive data**
+- **Clear communication of technical impact**
 
-Production-grade optimisation thinking
+It reflects how real analytical engineering challenges are solved in practice.
+## Next Steps
 
-Ethical handling of sensitive data
-
-Clear communication of technical impact
+- Publish accompanying blog article
+- Share technical summary via LinkedIn
+- Map this project to Global Talent endorsement criteria

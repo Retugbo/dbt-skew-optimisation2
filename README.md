@@ -62,7 +62,7 @@ Rather than scaling infrastructure, the optimisation focuses on changing the exe
 - Process non-skewed data separately
 - Recombine results using `UNION ALL`
 
-This preserves business logic while improving execution behaviour.
+
 ##  Implementation Details
 ### Synthetic Staging Layer
 
@@ -71,7 +71,7 @@ Seed data is staged using standard dbt practices.
 **Staging model**
 - `models/staging/stg_synthetic_movement.sql`
 
-This mimics movement-level operational data (synthetic).
+
 ### Skewed Execution Path
 
 **Model**
@@ -127,7 +127,7 @@ This mirrors a real production fix where instability was resolved without additi
 - Column names, values, and distributions are anonymised
 - The optimisation logic remains representative of real-world systems
 
-This makes the repository safe for public sharing.
+
 
 ## Project Structure
 
@@ -148,19 +148,7 @@ seeds/
 ---
 
 ##  KEY TAKEAWAYS
-
-
-## Key Takeaways
-
 - Data skew is an execution problem, not just a scaling issue
 - Isolating skewed keys is a simple and effective optimisation pattern
 - dbt models benefit from execution-aware design
-- Synthetic data can safely demonstrate real production behaviour
-## Why This Project Matters
 
-This project demonstrates:
-
-- **Independent problem solving**
-- **Production-grade optimisation thinking**
-- **Ethical handling of sensitive data**
-- **Clear communication of technical impact**

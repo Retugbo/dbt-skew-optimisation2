@@ -50,7 +50,7 @@ group by
 
 ## 5️ OPTIMISATION STRATEGY
 
-```markdown
+
 ## Optimisation Strategy
 
 Rather than scaling infrastructure, the optimisation focuses on changing the execution pattern.
@@ -81,6 +81,8 @@ This model processes only the high-frequency location:
 
 ```sql
 where location_id = 'SK1'
+```
+
 ## Next Steps
 
 - Publish accompanying blog article
@@ -89,7 +91,7 @@ where location_id = 'SK1'
 
 ### 6.3 Non-Skewed Execution Path
 
-```markdown
+
 ### Non-Skewed Execution Path
 
 **Model**
@@ -99,10 +101,11 @@ This model processes all other locations efficiently:
 
 ```sql
 where location_id != 'SK1'
+```
 
 ### 6.4 Final Optimised Model
 
-```markdown
+
 ### Final Optimised Model
 
 **Model**
@@ -114,12 +117,12 @@ Recombines both execution paths:
 select * from revenue_skewed
 union all
 select * from revenue_non_skewed
-
+```
 ---
 
 ## 7️ RESULTS & IMPACT
 
-```markdown
+
 ## Results and Impact
 
 Using representative synthetic data:
@@ -153,12 +156,12 @@ models/
 seeds/
   movement_non_skewed.csv
   movement_skewed.csv
-
+```
 ---
 
 ## 🔟 KEY TAKEAWAYS
 
-```markdown
+
 ## Key Takeaways
 
 - Data skew is an execution problem, not just a scaling issue

@@ -138,9 +138,14 @@ To provide reproducible evidence without using any proprietary data, I ran the m
 
 The optimised approach builds additional intermediate models (separate skewed and non-skewed aggregations) before recombining results. Despite the extra build steps, the overall run completed slightly faster on this synthetic dataset and demonstrates an execution-aware strategy that isolates skewed keys into a dedicated path.
 
-Screenshots:
-- Baseline run: `models/docs/run_base.png` !(models/docs/split_execution_paths.jpg)
-- Optimised run: `models/docs/run_optimised.png`
+### Run Evidence
+
+**Baseline run**
+![Baseline dbt run showing revenue_base execution time](models/docs/run_base.png)
+
+**Optimised run**
+![Optimised dbt run showing split execution path](models/docs/run_optimised.png)
+
 
 ##  Data Privacy and Anonymisation
 

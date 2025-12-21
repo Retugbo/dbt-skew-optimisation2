@@ -108,18 +108,33 @@ select * from revenue_non_skewed
 ```
 ---
 
-##  RESULTS & IMPACT
-
-
 ## Results and Impact
 
-Using representative synthetic data:
+Using representative synthetic data designed to include a heavily skewed key, this project demonstrates how execution-aware model design improves stability and predictability in analytical workloads.
 
-- Aggregations execute more predictably
-- Execution paths remain balanced
-- dbt runs are more stable
+Key outcomes:
 
-This mirrors a real production fix where instability was resolved without additional compute scaling.
+- Aggregations execute more predictably by isolating skewed keys into a dedicated execution path.
+- Execution paths remain balanced, avoiding single-stage bottlenecks caused by dominant keys.
+- dbt runs remain stable and reproducible even as skew intensity increases.
+- The optimised approach completes slightly faster than the baseline despite building additional intermediate models.
+
+This mirrors a real production fix where join and aggregation instability caused by skewed keys was resolved through query restructuring rather than compute scaling, improving reliability without increasing infrastructure cost.
+
+
+## Performance Evidence (Synthetic)
+
+To provide reproducible evidence without using any proprietary data, I ran the models locally using `dbt-duckdb` against synthetic seed data designed to include a heavily skewed key.
+
+- Baseline run (build `stg_synthetic_movement` + `revenue_base`): **0.59s**
+- Optimised run (build `stg_synthetic_movement` + `revenue_skewed` + `revenue_non_skewed` + `revenue_optimized`): **0.53s**
+
+The optimised approach builds additional intermediate models (separate skewed and non-skewed aggregations) before recombining results. Despite the extra build steps, the overall run completed slightly faster on this synthetic dataset and demonstrates an execution-aware strategy that isolates skewed keys into a dedicated path.
+
+Screenshots:
+- Baseline run: `models/docs/run_base.png`
+- Optimised run: `models/docs/run_optimised.png`
+
 ##  Data Privacy and Anonymisation
 
 - All datasets are fully synthetic

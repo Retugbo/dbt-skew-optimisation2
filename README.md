@@ -6,6 +6,10 @@ This repository demonstrates how severe **data skew** in analytical dbt models c
 
 This case study is based on a **real production issue**, recreated using **fully synthetic data** so the optimisation pattern can be shared publicly without exposing proprietary or sensitive information.
 ## Background and Problem Statement
+![Single aggregation path with skewed key bottleneck](models/docs/data_skew_problem.png)
+
+*Single aggregation path where a dominant key overwhelms the aggregation stage, leading to unbalanced execution.*
+
 
 In analytical workloads, it is common for a small subset of keys to dominate a dataset.
 
@@ -52,6 +56,9 @@ group by
 
 
 ## Optimisation Strategy
+![Split execution paths for skewed and non-skewed keys](models/docs/split_execution_paths.jpg)
+
+*Separating skewed and non-skewed keys into dedicated execution paths to keep execution balanced and predictable.*
 
 Rather than scaling infrastructure, the optimisation focuses on changing the execution pattern.
 

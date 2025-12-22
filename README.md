@@ -121,7 +121,7 @@ This framework was developed to resolve a **critical failure** in a tier-1 custo
 
 * **Reliability & Recovery:** Resolved persistent warehouse execution failures (OOM/Timeouts). The model transitioned from **daily instability and failure** to **100% successful execution.**
 * **Performance Engineering:** Reduced end-to-end processing time by **66%**, bringing the execution window down from **60+ minutes to just 20 minutes.**
-* **Operational Cost Efficiency:** Significantly reduced **cluster compute spillage** to remote storage by isolating skewed keys. This optimization directly lowered the compute credits consumed per run, optimizing the department’s OpEx.
+* **Operational Cost Efficiency:** Significantly reduced **cluster compute spillage** to remote storage by isolating skewed keys. This optimization directly lowered the compute costs, optimizing the department’s OpEx.
 * **SLA Restoration:** Restored the Data SLA for downstream executive stakeholders, ensuring mission-critical customer metrics were available for business decision-making 40 minutes earlier than previously possible.
 * **Scalability:** Execution paths now remain balanced, avoiding single-stage bottlenecks even as upstream data volumes increase, ensuring the pipeline is "future-proofed" for company growth.
 
